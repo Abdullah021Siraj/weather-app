@@ -11,8 +11,27 @@ import { Button } from "@/components/ui/button"
 import WeatherForecast from "./components/weather-forecast"
 import SearchBar from "./components/search-bar"
 
+
+interface WeatherData {
+  data: {
+    city: string;
+    country: string;
+    condition: {
+      description: string;
+      icon_url: string;
+    };
+    temperature: {
+      current: number;
+      humidity: number;
+    };
+    wind: {
+      speed: number;
+    };
+  };
+}
+
 export default function WeatherPage() {
-  const [weatherData, setWeatherData] = useState(null)
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
   const [city, setCity] = useState("London")
   const [query, setQuery] = useState("")
   const [loading, setLoading] = useState(true)
