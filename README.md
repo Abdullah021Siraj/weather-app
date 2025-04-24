@@ -1,7 +1,3 @@
-Here’s a polished, professional version of your README tailored for recruiters and developers:
-
----
-
 # 🌦️ Weather Dashboard (Next.js + TypeScript)  
 
 **A modern, real-time weather application** built with Next.js (App Router), TypeScript, and Tailwind CSS, featuring a responsive UI powered by shadcn/ui. Leverages the OpenWeatherMap API for accurate weather data and supports dual deployment via Vercel (CI/CD) and AWS EC2.  
