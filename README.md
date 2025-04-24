@@ -110,14 +110,5 @@ Here’s a polished, professional version of your README tailored for recruiters
 ---
 
 ## 📜 **License**  
-MIT © [Your Name].  
-For inquiries, contact: [your.email@example.com](mailto:your.email@example.com)  
-
----
-
-### **Notes for Customization**  
-1. Replace placeholder images (`screenshot.png`, `mobile.png`, `desktop.png`).  
-2. Update `your-repo`, `your_api_key_here`, and `<EC2_PUBLIC_IP>`.  
-3. Add badges (e.g., build status, coverage) if applicable.  
-
-This version emphasizes **clarity, professionalism, and technical depth** while maintaining readability. Let me know if you'd like further refinements! 🚀
+MIT © [ABDULLAH SIRAJ].  
+For inquiries, contact: [dev.abdullah21@gmail.com](mailto:dev.abdullah21@gmail.com)  
