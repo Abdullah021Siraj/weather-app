@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnipURL | Modern URL Shortener</title>
+    <style>
+        /* Modern CSS with variables */
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --success: #10b981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.5;
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 1.5rem 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        main {
+            flex: 1;
+            padding: 3rem 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .input-group {
+                flex-direction: column;
+            }
+        }
+
+        input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            height: 48px;
+        }
+
+        button:hover {
+            background: var(--primary-light);
+        }
+
+        button:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+        }
+
+        .result {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            display: none;
+        }
+
+        .result.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .short-url {
+            color: var(--primary);
+            font-weight: 500;
+            word-break: break-all;
+            margin: 0.5rem 0;
+        }
+
+        .copy-btn {
+            background: var(--dark);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
+
+        .copy-btn:hover {
+            background: #334155;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .feature {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .feature svg {
+            width: 2.5rem;
+            height: 2.5rem;
+            margin: 0 auto 1rem;
+            color: var(--primary);
+        }
+
+        .feature h3 {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Simple spinner */
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.5 10.5L21 3M16 3H21V8M21 14V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5C3 3.89543 3.89543 3 5 3H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h1>SnipURL</h1>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="card">
+                <h2>Shorten your URL</h2>
+                <div class="input-group">
+                    <input type="url" id="longUrl" placeholder="https://example.com/very-long-url" required>
+                    <button id="shortenBtn">
+                        <span id="btnText">Shorten</span>
+                    </button>
+                </div>
+                
+                <div id="result" class="result">
+                    <p>Your shortened URL:</p>
+                    <p class="short-url" id="shortUrl"></p>
+                    <button class="copy-btn" id="copyBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 16H6C4.89543 16 4 15.1046 4 14V6C4 4.89543 4.89543 4 6 4H14C15.1046 4 16 4.89543 16 6V8M10 20H18C19.1046 20 20 19.1046 20 18V10C20 8.89543 19.1046 8 18 8H10C8.89543 8 8 8.89543 8 10V18C8 19.1046 8.89543 20 10 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Copy</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="features">
+                <div class="feature">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13 2V4H15V6H13V8H15V10H13V12H15V14H13V16H15V18H13V20H15V22H11V20H9V22H5V20H7V18H5V16H7V14H5V12H7V10H5V8H7V6H5V4H7V2H5V4H3V6H5V8H3V10H5V12H3V14H5V16H3V18H5V20H3V22H1V2H5V4H7V2H9V4H11V2H13Z" fill="currentColor"/>
+                    </svg>
+                    <h3>Lightning Fast</h3>
+                    <p>Serverless AWS infrastructure for instant redirects</p>
+                </div>
+                <div class="feature">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1ZM12 11.99H19C18.47 16.11 15.72 19.78 12 20.93V12H5V6.3L12 3.19V11.99Z" fill="currentColor"/>
+                    </svg>
+                    <h3>Secure</h3>
+                    <p>HTTPS encryption on all links</p>
+                </div>
+                <div class="feature">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 13H11V3H3V13ZM3 21H11V15H3V21ZM13 21H21V11H13V21ZM13 3V9H21V3H13Z" fill="currentColor"/>
+                    </svg>
+                    <h3>Analytics</h3>
+                    <p>Track clicks with DynamoDB</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2023 SnipURL | Serverless URL Shortener</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const longUrlInput = document.getElementById('longUrl');
+            const shortenBtn = document.getElementById('shortenBtn');
+            const btnText = document.getElementById('btnText');
+            const resultDiv = document.getElementById('result');
+            const shortUrlSpan = document.getElementById('shortUrl');
+            const copyBtn = document.getElementById('copyBtn');
+            
+            // Replace with your API endpoint
+            const API_ENDPOINT = 'https://rcefn1q34m.execute-api.eu-central-1.amazonaws.com/prod/shorten';
+            
+            shortenBtn.addEventListener('click', async () => {
+                const url = longUrlInput.value.trim();
+                
+                if (!url) {
+                    alert('Please enter a URL');
+                    return;
+                }
+                
+                try {
+                    // Show loading state
+                    shortenBtn.disabled = true;
+                    btnText.textContent = 'Shortening...';
+                    shortenBtn.innerHTML = `
+                        <svg class="spinner" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25"/>
+                            <path d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"/>
+                        </svg>
+                        <span id="btnText">Shortening</span>
+                    `;
+                    
+                    const response = await fetch(API_ENDPOINT, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ url })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        shortUrlSpan.textContent = data.shortened_url;
+                        resultDiv.classList.add('active');
+                    } else {
+                        throw new Error(data.error || 'Failed to shorten URL');
+                    }
+                } catch (error) {
+                    alert(error.message);
+                } finally {
+                    shortenBtn.disabled = false;
+                    shortenBtn.innerHTML = '<span id="btnText">Shorten</span>';
+                }
+            });
+            
+            copyBtn.addEventListener('click', () => {
+                const url = shortUrlSpan.textContent;
+                navigator.clipboard.writeText(url);
+                copyBtn.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="currentColor"/>
+                    </svg>
+                    <span>Copied!</span>
+                `;
+                setTimeout(() => {
+                    copyBtn.innerHTML = `
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 16H6C4.89543 16 4 15.1046 4 14V6C4 4.89543 4.89543 4 6 4H14C15.1046 4 16 4.89543 16 6V8M10 20H18C19.1046 20 20 19.1046 20 18V10C20 8.89543 19.1046 8 18 8H10C8.89543 8 8 8.89543 8 10V18C8 19.1046 8.89543 20 10 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Copy</span>
+                    `;
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
