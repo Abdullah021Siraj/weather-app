@@ -4,4 +4,5 @@
 - edit: README.md## [e3f5385] - 2025-04-24
 - fix: Update README.md## [86ec561] - 2025-04-24
 - Update README.md## [4096d46] - 2025-04-25
-- feat: inital phase of frontend UI
+- feat: inital phase of frontend UI## [059ebcc] - 2025-05-12
+- Delete extra directory
